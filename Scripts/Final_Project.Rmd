@@ -6,26 +6,210 @@ output:
   pdf_document: default
 ---
 
+# **Rethinking Traditional Values: Analyzing How Messages of Climate Change Affect Family Planning Among Millennials and Generation Z**
+
+## Researchers: Lorenzo, S., & Gattis, L. 
+
+## **Synopsis:**
+
+Climate change continues to be perceived as a significant risk, especially 
+among younger demographics.For this study, my co-investigator and I plan on 
+further exploring the impact climate change messages have on Millennials and 
+Generation Z adults and the influence these messages have on the group’s 
+decision of whether or not to have children. Drawing inspiration from the idea 
+of risk being perceived as a reaction to danger (*Risk as feelings*) and risk 
+being perceived through reasoning (*Risk as analysis*), as well as Stuart Hall’s 
+Reception Theory, we anticipate uncovering correlations between the way climate 
+change messages are encoded by communicators and decoded by Millennials. In 
+doing so, a blending and expansion of these existing concepts may occur, 
+introducing a new evolution of theoretical framework, specifically in climate 
+change communication and decision making. We hypothesize that the way in which 
+media messages about climate change are framed and interpreted negatively 
+impacts Millennial and Generation Z perceptions about having children.
+
+## **Specific Aims/Study Objectives:**
+
+This initial study aims to be the steppingstone for multiple replications conducted in different
+countries. Over the summer, we conducted the study with Millennials and Generation Z adults living
+in Ghana. Later in the school year, we hope to duplicate the study with Millennials and Generation Z
+adults living in the United States. The overall purpose is to compare climate change and family
+perceptions among emerging consumers and observe if correlations exist between demographics
+across the globe. This analysis intends to answer the following research question: What effect do
+messages about climate change have on Millennials and Generation Z and their desire to have
+children?
+
+The goal is to provide a comprehensive overview of this trend by focusing on three main
+areas: (1) views of climate change among Millennials and Generation Z, (2) the distribution and
+subsequent interpretation of media messages on climate change, and (3) the impact these perceptions
+have on family planning.
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE,
+                      eval = TRUE,
+                      message = FALSE)
+library(tidyverse)
+library(psych)
+library(skimr)
+library(readr)
+library(janitor)
+library(rio)
+library(here)
+library(ggthemes)
+library(readxl)
+library(DT)
+library(tinytex)
+library(readxl)
+
 ```
 
-## R Markdown
+## **Data Visualization** 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+For this class, I will be utilizing the data collected to quantitatively determine if there are any
+correlations between views among demographics and to see if responses tend to skew towards
+specific perceptions (e.g., high fear of climate change, low desire to have children). My plan is to use
+our data to better visualize participant responses (graphs, charts) and categorize information into a
+variety of sets (tables, filtering). This will be my second round of data analyzation for this specific
+study. Last term, I had only 130 survey responses at my disposal that my team used to create
+preliminary graphs in EDLD651. This term, I have nearly three times as many responses to evaluate and I will
+be producing a whole new set of visuals to represent new findings.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+**Here is the new data I will be evaluating**
 
-```{r cars}
-summary(cars)
+```{r New Data}
+
+ghana_study <- rio::import(here::here("Data", "Ghana_Data_Clean.xlsx"),
+                 setclass = "tbl_df")
+
+print(ghana_study)
+
 ```
 
-## Including Plots
+#Below are the visuals I created using the new data set.
 
-You can also embed plots, for example:
+## Question 1: How concerned are you about climate change? (response by region, color-coded by
+generation) 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+Response Codes:
+0 = Not At All, 
+1 = Not Very Concerned, 
+2 = Slightly Concerned, 
+3 = Moderately Concerned, 
+4 = Very Concerned, 
+5 = Extremely Concerned
+
+```{r Q1, echo=FALSE}
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(ggrepel)
+library(ggplot2)
+
+ghana_study_clean <- rio::import(here::here("Data", "Ghana_Data_Clean2.xlsx"),
+                 setclass = "tbl_df")
+
+responses <- ghana_study_clean %>% 
+    group_by(qq1_concern, generation) %>% 
+  count(qq1_concern %in% c(0:5))
+
+library(wesanderson)
+
+ggplot(responses, aes(x = qq1_concern, y = n, color = generation, fill = generation)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "How concerned are you about climate change?",
+       subtitle = "Response Type by Number of Responses (Survey Data Obtained in Ghana, West Africa)",
+       x = "Response Type",
+       y = "Number of Responses",
+       caption = "0 = Not At All, 1 = Not Very Concerned, 2 = Slightly Concerned, 3 = Moderately Concerned, 4 = Very Concerned, 5 = Extremely Concerned") +
+  theme(plot.caption = element_text(hjust=0.5)) +
+  scale_color_manual(values = wes_palette(n = 3, name = "Moonrise3"))
+
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Question 2: Currently, how much is the issue of climate change being addressed in the region
+where you reside? (response type by number of responses by region of residence, color-coded by generation)
+
+Response Codes:
+0 = Not At All, 
+1 = Barely Addressed, 
+2 = Some Mention, 
+3 = Moderately Addressed, 
+4 = Majorly Addressed, 
+5 = Major Actions Have Been Taken
+
+```{r Q2, echo=FALSE}
+
+responses2 <- ghana_study_clean %>% 
+    group_by(qq2_region, generation, region) %>% 
+  count(qq2_region %in% c(0:5))
+
+library(plotly)
+library(gapminder)
+
+ggplot(responses2, aes(x = qq2_region, y = n, color = generation, fill = generation)) +
+  facet_wrap(~region) +
+  geom_point() +
+  labs(title = "Currently, how much is the issue of climate change being addressed in the region
+where you reside?",
+       subtitle = "Response Type by Number of Responses by Region of Residence (Survey Data Obtained in Ghana, West Africa)",
+       x = "Response Type",
+       y = "Number of Responses",
+       caption = "0 = Not At All, 1 = Barely Addressed, 2 = Some Mention, 3 = Moderately Addressed, 4 = Majorly Addressed, 5 = Major Actions Have Been Taken") +
+  theme(plot.caption = element_text(hjust=0.5)) 
+
+
+```
+
+## Question 3: How much of an influence has climate change had on your desire to have children?
+(generation by desire to have children, text added to indicate gender)
+
+Response Codes:
+0 = No Influence At All, 
+1 = Barely Any Influence, 
+2 = Minor Influence, 
+3 = Moderate Influence, 
+4 = Major Influence, 
+5 = Top Influence
+
+```{r Q3, echo=FALSE}
+
+responses3 <- ghana_study_clean %>% 
+    group_by(qq3_influence, generation, gender, region, qq2_region) %>% 
+  count(qq3_influence %in% c(0:5))
+
+
+ggplot(responses3, aes(x = qq3_influence, y = n, color = gender, fill = gender)) +
+  geom_point() +
+  geom_text_repel( aes(label = region), stat = "unique") +
+  labs(title = "How much of an influence has climate change had on your desire to have children?",
+       subtitle = "Gender by Type of Response by Region of Residence (Survey Data Obtained in Ghana, West Africa)",
+       x = "Response Type",
+       y = "Number of Responses",
+       caption = "0 = No Influence At All, 1 = Barely Any Influence, 2 = Minor Influence, 3 = Moderate Influence, 4 = Major Influence, 5 = Top Influence") +
+  theme(plot.caption = element_text(hjust=0.5))
+
+```
+
+## Question 4: If issues of climate change were addressed more effectively, how much would it impact your
+desire to have children? (responses by region)
+
+Response Codes:
+0 = No Impact At All, 
+1 = Very Little Impact, 
+2 = Minor Impact, 
+3 = Moderate Impact, 
+4 = High Impact, 
+5 = Extremely High Impact
+
+```{r Q4, echo=FALSE}
+
+ghana_region <- rio::import(here::here("Data", "Ghana_Data_Clean3.xlsx"),
+                 setclass = "tbl_df")
+
+```
+
+## **Conclusion** 
+
