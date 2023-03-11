@@ -1,0 +1,82 @@
+---
+title: "EDLD652 Presentation"
+author: "Sam Lorenzo"
+date: "2023-03-11"
+output:
+  xaringan::moon_reader:
+    seal: false
+
+---
+
+```{css, echo = FALSE}
+.remark-slide-content {
+  color: white;
+  background-color: black;
+}
+```
+
+# Rethinking Traditional Values: Analyzing How Messages of Climate Change Affect Family Planning Among Millennials and Generation Z (Phase I - Ghana)
+### Authors: Samantha Lorenzo & Laura Gattis
+![Ghana Flag](https://png.pngtree.com/png-clipart/20221015/ourmid/pngtree-vintage-ghana-flag-png-image_6342465.png)
+
+---
+
+![Warning](https://static.vecteezy.com/system/resources/previews/009/663/747/original/warning-icon-transparent-free-png.png)
+---
+
+![Under Construction](https://pngimg.com/d/under_construction_PNG68.png)
+
+---
+
+# BACKGROUND
+
+![Ghana](IMG_0998.jpg)
+
+---
+
+# STUDY OBJECTIVES
+
+## The goal is to provide a comprehensive overview of this trend by focusing on three main areas:
+
+### 1. Views of climate change among Millennials and Generation Z
+
+### 2. The distribution and subsequent interpretation of media messages on climate change
+
+### 3. The impact these perceptions have on family planning
+
+---
+
+# LAST TERM
+
+![New](v1.png)
+
+---
+# THIS TERM
+
+![SCR](Prez.jpg)
+
+---
+
+# RESEARCH QUESTIONS
+
+### Question 1: How concerned are you about climate change?
+
+### Question 2: Currently, how much is the issue of climate change being addressed in the region
+where you reside?
+
+### Question 3: How much of an influence has climate change had on your desire to have children?
+
+### Question 4: If issues of climate change were addressed more effectively, how much would it impact your
+desire to have children?
+
+---
+
+# SAMPLE VISUALIZATION
+
+![Sample](Sample.png)
+
+---
+
+# THANK YOU!
+
+![Thank You](https://images.emojiterra.com/google/android-nougat/512px/1f477-1f3fb-2640.png)
