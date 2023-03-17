@@ -57,10 +57,11 @@ library(readxl)
 library(DT)
 library(tinytex)
 library(readxl)
+library(flexdashboard)
 
 ```
 
-### **Data Visualization** 
+### **Data Visualization Plan** 
 
 For this class, I will be utilizing the data collected to quantitatively determine if there are any
 correlations between views among demographics and to see if responses tend to skew towards
