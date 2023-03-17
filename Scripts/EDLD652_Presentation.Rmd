@@ -2,10 +2,9 @@
 title: "EDLD652 Presentation"
 author: "Sam Lorenzo"
 date: "2023-03-11"
-output:
+output: 
   xaringan::moon_reader:
-    seal: false
-
+    seal: no
 ---
 
 ```{css, echo = FALSE}
@@ -61,13 +60,11 @@ output:
 
 ### Question 1: How concerned are you about climate change?
 
-### Question 2: Currently, how much is the issue of climate change being addressed in the region
-where you reside?
+### Question 2: Currently, how much is the issue of climate change being addressed in the region where you reside?
 
 ### Question 3: How much of an influence has climate change had on your desire to have children?
 
-### Question 4: If issues of climate change were addressed more effectively, how much would it impact your
-desire to have children?
+### Question 4: If issues of climate change were addressed more effectively, how much would it impact your desire to have children?
 
 ---
 

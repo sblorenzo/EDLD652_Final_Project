@@ -1,0 +1,319 @@
+---
+title: "Rethinking Traditional Values"
+subtitle: "Analyzing How Messages of Climate Change Affect Family Planning Among Millennials and Generation Z"
+author: "Researchers: Lorenzo, S., & Gattis, L."
+date: "EDLD652 Final Project"
+output:
+  pdf_document: default
+---
+
+### **Synopsis:**
+
+Climate change continues to be perceived as a significant risk, especially 
+among younger demographics.For this study, my co-investigator and I plan on 
+further exploring the impact climate change messages have on Millennials and 
+Generation Z adults and the influence these messages have on the group’s 
+decision of whether or not to have children. Drawing inspiration from the idea 
+of risk being perceived as a reaction to danger (*Risk as feelings*) and risk 
+being perceived through reasoning (*Risk as analysis*), as well as Stuart Hall’s 
+Reception Theory, we anticipate uncovering correlations between the way climate 
+change messages are encoded by communicators and decoded by Millennials. In 
+doing so, a blending and expansion of these existing concepts may occur, 
+introducing a new evolution of theoretical framework, specifically in climate 
+change communication and decision making. We hypothesize that the way in which 
+media messages about climate change are framed and interpreted negatively 
+impacts Millennial and Generation Z perceptions about having children.
+
+### **Specific Aims/Study Objectives:**
+
+This initial study aims to be the steppingstone for multiple replications conducted in different
+countries. Over the summer, we conducted the study with Millennials and Generation Z adults living
+in Ghana. Later in the school year, we hope to duplicate the study with Millennials and Generation Z
+adults living in the United States. The overall purpose is to compare climate change and family
+perceptions among emerging consumers and observe if correlations exist between demographics
+across the globe. This analysis intends to answer the following research question: What effect do
+messages about climate change have on Millennials and Generation Z and their desire to have
+children?
+
+The goal is to provide a comprehensive overview of this trend by focusing on three main
+areas: (1) views of climate change among Millennials and Generation Z, (2) the distribution and
+subsequent interpretation of media messages on climate change, and (3) the impact these perceptions
+have on family planning.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE,
+                      eval = TRUE,
+                      message = FALSE)
+library(tidyverse)
+library(psych)
+library(skimr)
+library(readr)
+library(janitor)
+library(rio)
+library(here)
+library(ggthemes)
+library(readxl)
+library(DT)
+library(tinytex)
+library(readxl)
+
+```
+
+### **Data Visualization** 
+
+For this class, I will be utilizing the data collected to quantitatively determine if there are any
+correlations between views among demographics and to see if responses tend to skew towards
+specific perceptions (e.g., high fear of climate change, low desire to have children). My plan is to use
+our data to better visualize participant responses (graphs, charts) and categorize information into a
+variety of sets (tables, filtering). This will be my second round of data analyzation for this specific
+study. Last term, I had only 130 survey responses at my disposal that my team used to create
+preliminary graphs in EDLD651. This term, I have nearly three times as many responses to evaluate and I will
+be producing a whole new set of visuals to represent new findings.
+
+# Here is the new data I will be evaluating:
+
+```{r New Data}
+
+ghana_study <- rio::import(here::here("Data", "Ghana_Data_Clean.xlsx"),
+                 setclass = "tbl_df")
+
+print(ghana_study)
+
+```
+
+\newpage
+
+# Below are the visuals I created using the new data set:
+
+## Question 1: How concerned are you about climate change?
+
+### Response Codes:
+
+### 0 = Not At All
+
+### 1 = Not Very Concerned
+
+### 2 = Slightly Concerned
+
+### 3 = Moderately Concerned
+
+### 4 = Very Concerned
+
+### 5 = Extremely Concerned
+
+```{r Q1, echo=FALSE}
+
+library(tidyverse)
+library(cowplot)
+library(colorspace)
+library(ggrepel)
+library(ggplot2)
+
+ghana_study_clean <- rio::import(here::here("Data", "Ghana_Data_Clean2.xlsx"),
+                 setclass = "tbl_df")
+
+responses <- ghana_study_clean %>% 
+    group_by(qq1_concern, generation) %>% 
+  count(qq1_concern %in% c(0:5))
+
+responses <- responses %>% 
+  mutate(qq1_concern = recode(qq1_concern, "0" = "Not At All",
+                              "1" = "Not Very Concerned", 
+                              "2" = "Slightly Concerned", 
+                              "3" = "Moderately Concerned", 
+                              "4" = "Very Concerned", 
+                              "5" = "Extremely Concerned"))
+
+average_responses1 <- ghana_study_clean %>% 
+  group_by(generation) %>% 
+  summarise(average_responses1 = mean(qq1_concern))
+
+responses <- left_join(responses, average_responses1)
+
+library(dplyr)
+
+ggplot(responses, aes(x = qq1_concern, y = n, col = generation)) +
+  geom_segment( aes(x = qq1_concern, xend = qq1_concern, y = 0, yend = n)) +
+  labs(title = "Level of Climate Change Concern by Generation (Ghana, West Africa)",
+       subtitle = "Response Value by Number of Responses",
+       x = "",
+       y = "Number of Responses",
+       col = "Generation") +
+  theme_bw() +
+  coord_flip()
+
+
+```
+
+\newpage
+
+## Question 2: Currently, how much is the issue of climate change being addressed in the region where you reside?
+
+### Response Codes:
+
+### 0 = Not At All 
+
+### 1 = Barely Addressed
+
+### 2 = Some Mention
+
+### 3 = Moderately Addressed
+
+### 4 = Majorly Addressed
+
+### 5 = Major Actions Have Been Taken
+
+```{r Q2, echo=FALSE}
+
+responses2 <- ghana_study_clean %>% 
+    group_by(qq2_region, generation, region) %>% 
+  count(qq2_region %in% c(0:5))
+
+responses2 <- responses2 %>% 
+  mutate(qq2_region = recode(qq2_region, "0" = "Not At All",
+                              "1" = "Barely Addressed", 
+                              "2" = "Some Mention", 
+                              "3" = "Moderately Addressed", 
+                              "4" = "Majorly Addressed", 
+                              "5" = "Major Actions Have Been Taken"))
+
+average_responses2 <- ghana_study_clean %>% 
+  group_by(region) %>% 
+  summarise(average_responses2 = mean(qq2_region))
+
+responses2 <- left_join(responses2, average_responses2)
+
+library(plotly)
+library(gapminder)
+
+library("egg")
+
+ggplot(responses2, aes(x = n, y = qq2_region, fill = generation)) +
+  geom_col() +
+  facet_wrap(~region) +
+  labs(title = "Exposure to Climate Change Messages by Region (Ghana, West Africa)",
+       x = "Number of Responses",
+       y = "",
+       fill = "Generation") +
+  theme_bw()
+
+
+
+```
+
+\newpage
+
+## Question 3: How much of an influence has climate change had on your desire to have children?
+
+### Response Codes:
+
+### 0 = No Influence At All 
+
+### 1 = Barely Any Influence
+
+### 2 = Minor Influence
+
+### 3 = Moderate Influence
+
+### 4 = Major Influence
+
+### 5 = Top Influence
+
+```{r Q3, echo=FALSE}
+
+responses3 <- ghana_study_clean %>% 
+    group_by(qq3_influence, generation, gender, region, qq2_region) %>% 
+  count(qq3_influence %in% c(0:5))
+
+average_region3 <- ghana_study_clean %>% 
+  group_by(region) %>% 
+  summarise(average_region3 = mean(qq3_influence))
+
+responses3 <- left_join(responses3, average_region3)
+
+average_gender3 <- ghana_study_clean %>% 
+  group_by(gender) %>% 
+  summarise(average_gender3 = mean(qq3_influence))
+
+responses3 <- left_join(responses3, average_gender3)
+
+responses3 <- responses3 %>% 
+  mutate(qq3_influence = recode(qq3_influence, "0" = "No Influence At All",
+                              "1" = "Barely Any Influence", 
+                              "2" = "Minor Influence", 
+                              "3" = "Moderate Influence", 
+                              "4" = "Major Influence", 
+                              "5" = "Top Influence"))
+
+ggplot(responses3, aes(x = average_region3, y = region, fill = qq3_influence)) +
+  geom_col() +
+  labs(title = "Climate Change Impact on Family Planning (Ghana, West Africa)",
+       subtitle = "Types of Responses Per Region",
+       x = "Average Reponses Per Region",
+       y = "",
+       fill = "Level of Impact") +
+  theme_bw()
+
+```
+
+\newpage
+
+## Question 4: If issues of climate change were addressed more effectively, how much would it impact your desire to have children? 
+
+### Response Codes:
+
+### 0 = No Impact At All
+
+### 1 = Very Little Impact
+
+### 2 = Minor Impact
+
+### 3 = Moderate Impact
+
+### 4 = High Impact
+
+### 5 = Extremely High Impact
+
+```{r Q4, echo=FALSE}
+
+ghana_region <- rio::import(here::here("Data", "Ghana_Data_Clean3.xlsx"),
+                 setclass = "tbl_df")
+
+responses4 <- ghana_region %>% 
+    group_by(q4, generation, region) %>% 
+  count(q4 %in% c(0:5))
+
+average_region4 <- ghana_region %>% 
+  group_by(region) %>% 
+  summarise(average_region4 = mean(q4))
+
+responses4 <- left_join(responses4, average_region4)
+
+average_generation4 <- ghana_region %>% 
+  group_by(generation) %>% 
+  summarise(average_generation4 = mean(q4))
+
+responses4 <- left_join(responses4, average_generation4)
+
+responses4 <- responses4 %>% 
+  mutate(q4 = recode(q4, "0" = "No Impact At All",
+                              "1" = "Very Little Impact", 
+                              "2" = "Minor Impact", 
+                              "3" = "Moderate Impact", 
+                              "4" = "High Impact", 
+                              "5" = "Extremely High Impact"))
+
+ggplot(responses4, aes(x = generation, y = average_region4, fill = region)) + 
+  geom_col() +
+  facet_wrap(~q4)+
+    labs(title = "Impact of Effective Climate Change Communication",
+       subtitle = "Levels of Influence on Family Planning (Ghana, West Africa)",
+       x = "Generation",
+       y = "Average Responses Per Generation",
+       fill = "Region") +
+  coord_flip() +
+  theme_bw()
+
+```
+
